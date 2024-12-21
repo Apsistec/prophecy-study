@@ -1,0 +1,7 @@
+{
+  "name": "prophecy-study",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
