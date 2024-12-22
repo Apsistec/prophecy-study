@@ -1,27 +1,53 @@
-
 import { Component, inject } from '@angular/core';
-import { RefresherCustomEvent, IonHeader, IonToolbar, IonTitle, IonContent, IonRefresher, IonRefresherContent, IonList } from '@ionic/angular/standalone';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonList,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonItem,
+  IonSpinner,
+} from '@ionic/angular/standalone';
 import { MessageComponent } from '../message/message.component';
 
-import { DataService, Message } from '../services/data.service';
+import { MessageService, Message } from '../services/message.service';
+import { ViewMessagePage } from '../view-message/view-message.page';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRefresher, IonRefresherContent, IonList, MessageComponent],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonList,
+    MessageComponent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    ViewMessagePage,
+    AsyncPipe,
+    IonItem,
+    IonSpinner
+  ],
 })
 export class HomePage {
-  private data = inject(DataService);
-  constructor() {}
+  messages$!: Observable<Message[]>;
 
-  refresh(ev: any) {
-    setTimeout(() => {
-      (ev as RefresherCustomEvent).detail.complete();
-    }, 3000);
+  private messageService = inject(MessageService);
+
+  constructor() {
+    this.messages$ = this.messageService.getMessages();
   }
 
-  getMessages(): Message[] {
-    return this.data.getMessages();
+  selectMessage(message: Message) {
+    this.messageService.setSelectedMessage(message);
   }
 }
