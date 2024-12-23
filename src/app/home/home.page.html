@@ -17,18 +17,25 @@
   <ion-grid>
     <ion-row>
       <ion-col size="4">
-        <ion-list>
-          @if(messages$ | async; as messages){
-          @for (message of messages; track message) {
-          <app-message [message]="message"></app-message>
-          }
-          }
-          @else {
-          <ion-item>
-            <ion-spinner></ion-spinner>
-          </ion-item>
-          }
-        </ion-list>
+         <ion-content class="messages-list-container"> 
+          <ion-list class="messages-list">
+            <ion-list-header>            
+              <ion-button (click)="toggleSort()">
+                Sort {{ sortDescending ? 'Ascending' : 'Descending' }}
+              </ion-button>
+            </ion-list-header>
+            @if(sortedMessages$){
+              @for (message of sortedMessages$ | async; track message) {
+                <app-message [message]="message" f></app-message>
+              }
+            }
+            @else {
+              <ion-item>
+                <ion-spinner></ion-spinner>
+              </ion-item>
+            }
+          </ion-list>
+        </ion-content>
       </ion-col>
       <ion-col size="8">
         <app-view-message></app-view-message>

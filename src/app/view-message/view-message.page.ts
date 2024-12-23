@@ -11,11 +11,16 @@ import {
   IonIcon,
   IonLabel,
   IonNote,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personCircle } from 'ionicons/icons';
 import { MessageService, Message } from '../services/message.service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-message',
@@ -28,9 +33,14 @@ import { AsyncPipe } from '@angular/common';
     IonBackButton,
     IonContent,
     IonItem,
-    IonIcon,
     IonLabel,
-    AsyncPipe
+    AsyncPipe,
+    DatePipe,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
   ],
 })
 export class ViewMessagePage implements OnInit {

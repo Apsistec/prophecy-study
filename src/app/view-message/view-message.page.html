@@ -9,18 +9,24 @@
 @if (selectedMessage$ | async; as selectedMessage) {
 <ion-content [fullscreen]="true">
   <ion-item>
-    <ion-icon aria-hidden="true" name="person-circle" color="primary"></ion-icon>
     <ion-label class="ion-text-wrap">
-      <h2>
-        {{ selectedMessage.dateLocation }}
-      </h2>
     </ion-label>
   </ion-item>
-  <div class="ion-padding">
-    <h1>{{ selectedMessage.link }}</h1>
-    <p>
-      {{selectedMessage.paragraphs}}
-    </p>
-  </div>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        {{ selectedMessage.date | date: 'EEEE, MMMM d, y' }}
+      </ion-card-subtitle>
+      <ion-card-title>
+        {{selectedMessage.location}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        {{selectedMessage.paragraphs}}
+      </p>
+    </ion-card-content>
+    <!-- <a href="selectedMessage.link">Link to House of Destiny</a> -->
+  </ion-card>
 </ion-content>
 }

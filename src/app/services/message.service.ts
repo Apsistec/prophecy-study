@@ -6,7 +6,8 @@ export interface Message {
   page: number;
   row: number;
   link: string;
-  dateLocation: string;
+  location: string;
+  date: Date;
   paragraphs: string[];
 }
 
@@ -29,8 +30,7 @@ export class MessageService {
   public getMessageById(id: number): Message {
     return this.messages[id];
   }
-
-
+  
   setSelectedMessage(message: Message) {
     this.selectedMessageSubject.next(message);
   }
