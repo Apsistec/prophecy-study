@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -12,13 +12,21 @@ import {
   IonSpinner,
   IonButton,
   IonListHeader,
+  IonModal,
+  IonButtons,
+  IonBackButton,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  Platform,
 } from '@ionic/angular/standalone';
 import { MessageComponent } from '../message/message.component';
-
 import { MessageService, Message } from '../services/message.service';
 import { ViewMessagePage } from '../view-message/view-message.page';
 import { map, Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -40,12 +48,22 @@ import { AsyncPipe } from '@angular/common';
     IonSpinner,
     IonButton,
     IonListHeader,
+    IonModal,
+    IonButtons,
+    IonBackButton,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    DatePipe,
   ],
 })
 export class HomePage {
-  messages!: Message[];
-  private messageService = inject(MessageService);
   sortDescending = true;
+  private messageService = inject(MessageService);
+
+  messages!: Message[];
   sortedMessages$: Observable<Message[]> = this.messageService
     .getMessages()
     .pipe(
@@ -57,6 +75,19 @@ export class HomePage {
         });
       })
     );
+  selectedMessage$ = this.messageService.selectedMessage$;
+
+  desktop!: boolean;
+  private platform = inject(Platform);
+
+  ngOnInit() {
+    console.log(this.platform.is('desktop'));
+    if (this.platform.is('desktop')) {
+      this.desktop = true;
+    } else {
+      this.desktop = false;
+    }
+  }
 
   toggleSort() {
     this.sortDescending = !this.sortDescending;

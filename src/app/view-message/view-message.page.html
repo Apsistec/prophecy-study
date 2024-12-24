@@ -1,17 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button [text]="getBackButtonText()" defaultHref="/"></ion-back-button>
-    </ion-buttons>
+<ion-title>
+  Prophecy
+</ion-title>
   </ion-toolbar>
 </ion-header>
 
 @if (selectedMessage$ | async; as selectedMessage) {
 <ion-content [fullscreen]="true">
-  <ion-item>
-    <ion-label class="ion-text-wrap">
-    </ion-label>
-  </ion-item>
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>

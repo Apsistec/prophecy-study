@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="secondary" fill="clear" (click)="toggleFavorite($event, message)">
+        <ion-icon [name]="message.isFavorite ? 'heart' : 'heart-outline'" [color]="message.isFavorite ? 'danger' : 'primary'"></ion-icon>
+      </ion-button>
+      </ion-buttons>
+    <ion-title>Prophecy</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="secondary" fill="clear" (click)="cancel()">Back</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>
+          {{ message.date | date: 'EEEE, MMMM d, y' }}
+        </ion-card-subtitle>
+        <ion-card-title>
+          {{message.location}}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          {{message.paragraphs}}
+        </p>
+      </ion-card-content>
+      <!-- <a href="selectedMessage.link">Link to House of Destiny</a> -->
+    </ion-card>
+  </ion-content>

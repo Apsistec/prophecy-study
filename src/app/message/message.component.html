@@ -6,12 +6,8 @@
     </b>
     <p>{{message.location}}</p>
   </ion-label>
-  <ion-button fill="clear" slot="end" (click)="selectFavorite()" >
-    @if(favoriteSelected){
-      <ion-icon name="heart" color="danger"></ion-icon>
-    } @else {
-      <ion-icon  name="heart"></ion-icon>
-    }
+  <ion-button fill="clear" slot="end" (click)="toggleFavorite($event, message)" >
+      <ion-icon [name]="message.isFavorite ? 'heart' : 'heart-outline'" [color]="message.isFavorite ? 'danger' : 'primary'"></ion-icon>
   </ion-button>
 </ion-item>
 }

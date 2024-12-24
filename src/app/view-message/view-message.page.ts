@@ -1,21 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import {
   Platform,
   IonHeader,
   IonToolbar,
-  IonButtons,
-  IonBackButton,
   IonContent,
-  IonItem,
-  IonIcon,
-  IonLabel,
-  IonNote,
   IonCard,
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
   IonCardContent,
+  IonTitle,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personCircle } from 'ionicons/icons';
@@ -29,11 +23,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
   imports: [
     IonHeader,
     IonToolbar,
-    IonButtons,
-    IonBackButton,
     IonContent,
-    IonItem,
-    IonLabel,
     AsyncPipe,
     DatePipe,
     IonCard,
@@ -41,7 +31,8 @@ import { AsyncPipe, DatePipe } from '@angular/common';
     IonCardTitle,
     IonCardSubtitle,
     IonCardContent,
-  ],
+    IonTitle
+],
 })
 export class ViewMessagePage implements OnInit {
   public selectedMessage!: Message;

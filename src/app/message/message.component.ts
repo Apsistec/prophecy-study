@@ -10,11 +10,13 @@ import {
   IonLabel,
   IonButton,
   IonIcon,
+  ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronForward, heart, heartOutline } from 'ionicons/icons';
 import { MessageService, Message } from '../services/message.service';
 import { DatePipe } from '@angular/common';
+import { ProphecyModalComponent } from '../prophecy-modal/prophecy-modal.component';
 
 @Component({
   selector: 'app-message',
@@ -24,24 +26,66 @@ import { DatePipe } from '@angular/common';
   imports: [IonItem, IonLabel, DatePipe, IonButton, IonIcon],
 })
 export class MessageComponent {
-  selectedMessage!: Message;
-  favoriteSelected = false;
 
-  private platform = inject(Platform);
   @Input() message?: Message;
-  isIos() {
-    return this.platform.is('ios');
-  }
+
   constructor(private messageService: MessageService) {
     addIcons({ chevronForward, heartOutline, heart });
   }
 
-  selectMessage(message: Message) {
-    this.messageService.setSelectedMessage(message);
+  desktop!: boolean;
+  private platform = inject(Platform);
+
+  ngOnInit() {
+    if (this.platform.is('desktop')) {
+      this.desktop = true;
+    } else {
+      this.desktop = false;
+    }
   }
 
-  selectFavorite(){
-    this.favoriteSelected = !this.favoriteSelected;
-  
+  selectMessage(message: Message) {
+    this.messageService.setSelectedMessage(message);
+    if (!this.desktop) {
+      this.openModal(message);
+    }
+  }
+
+  toggleFavorite(event: Event, message: Message) {
+    if (!message.id) {
+      console.error('Message ID is required for toggling favorite status');
+      return;
+    }
+    event.stopPropagation();
+    const newStatus = !message.isFavorite;
+    this.messageService.toggleFavorite(message.id, newStatus);
+  }
+
+  private modalCtrl = inject(ModalController);
+
+  async openModal(message: Message) {
+    const modal = await this.modalCtrl.create({
+      component: ProphecyModalComponent,
+      componentProps: {
+        message: message,
+      },
+    });
+
+    modal.onWillDismiss().then((result) => {
+      // Check if we received any data
+      if (result.data) {
+        console.log('Modal sent back data:', result.data);
+        // Handle the returned data
+        if (result.data.isFavorite !== undefined) {
+          // Update your local state or trigger a refresh
+          this.messageService.toggleFavorite(
+            result.data.id,
+            result.data.isFavorite
+          );
+        }
+      }
+    });
+
+    modal.present();
   }
 }
