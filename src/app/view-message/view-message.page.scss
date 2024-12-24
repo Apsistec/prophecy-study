@@ -1,50 +1,96 @@
-// ion-item {
-//   --inner-padding-end: 0;
-//   --background: transparent;
-// }
-
-// ion-label {
-//   margin-top: 12px;
-//   margin-bottom: 12px;
-// }
-
-// ion-item h2 {
-//   font-weight: 600;
-
-//   /**
-//    * With larger font scales
-//    * the date/time should wrap to the next
-//    * line. However, there should be
-//    * space between the name and the date/time
-//    * if they can appear on the same line.
-//    */
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: space-between;
-// }
-
-// ion-item .date {
-//   align-items: center;
-//   display: flex;
-// }
-
-// ion-item ion-icon {
-//   font-size: 42px;
-//   margin-right: 8px;
-// }
-
-// ion-item ion-note {
-//   font-size: 0.9375rem;
-//   margin-right: 12px;
-//   font-weight: normal;
-// }
-
-// h1 {
-//   margin: 0;
-//   font-weight: bold;
-//   font-size: 1.4rem;
-// }
-
-// p {
-//   line-height: 1.4;
-// }
+// view-message.component.scss
+.message-detail {
+    display: flex;
+    flex-direction: column;
+    height: var(--detail-height, calc(100vh - 56px));
+    overflow: hidden;
+  
+    .detail-header {
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      
+      ion-toolbar {
+        --background: var(--ion-color-light);
+      }
+    }
+  
+    .detail-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      height: var(--detail-content-height, calc(100vh - 112px));
+      
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      
+      ion-card {
+        margin: 0;
+        box-shadow: none;
+        background: var(--ion-color-light);
+        min-height: calc(100% - 2rem);
+        
+        ion-card-header {
+          padding: 16px;
+          
+          ion-card-subtitle {
+            font-size: 0.9rem;
+            color: var(--ion-color-medium);
+          }
+          
+          ion-card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--ion-color-dark);
+          }
+        }
+        
+        ion-card-content {
+          padding: 16px;
+          
+          p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 1rem;
+            color: var(--ion-color-dark);
+            
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  :host-context(.ios) {
+    .message-detail {
+      --detail-height: calc(100vh - 44px);
+      --detail-content-height: calc(100vh - 88px);
+      
+      .detail-header ion-toolbar {
+        padding-top: env(safe-area-inset-top);
+      }
+    }
+  }
+  
+  :host-context(.md) {
+    .message-detail {
+      --detail-height: calc(100vh - 56px);
+      --detail-content-height: calc(100vh - 112px);
+    }
+  }
+  
+  :host-context(.desktop) {
+    .message-detail {
+      height: 100vh;
+      
+      .detail-content {
+        height: calc(100vh - 56px);
+      }
+    }
+  }

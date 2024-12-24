@@ -1,18 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
-  Platform,
   IonHeader,
   IonToolbar,
-  IonContent,
   IonCard,
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
   IonCardContent,
   IonTitle,
+  IonButtons,
+  IonButton,
+  IonIcon,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { personCircle } from 'ionicons/icons';
 import { MessageService, Message } from '../services/message.service';
 import { AsyncPipe, DatePipe } from '@angular/common';
 
@@ -20,10 +19,10 @@ import { AsyncPipe, DatePipe } from '@angular/common';
   selector: 'app-view-message',
   templateUrl: './view-message.page.html',
   styleUrls: ['./view-message.page.scss'],
+  standalone: true,
   imports: [
     IonHeader,
     IonToolbar,
-    IonContent,
     AsyncPipe,
     DatePipe,
     IonCard,
@@ -31,25 +30,21 @@ import { AsyncPipe, DatePipe } from '@angular/common';
     IonCardTitle,
     IonCardSubtitle,
     IonCardContent,
-    IonTitle
-],
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonIcon,
+  ],
 })
-export class ViewMessagePage implements OnInit {
-  public selectedMessage!: Message;
-  private platform = inject(Platform);
-
+export class ViewMessagePage {
   private messageService = inject(MessageService);
-
   selectedMessage$ = this.messageService.selectedMessage$;
 
-  constructor() {
-    addIcons({ personCircle });
-  }
-
-  ngOnInit() {}
-
-  getBackButtonText() {
-    const isIos = this.platform.is('ios');
-    return isIos ? 'Inbox' : '';
+  toggleFavorite(message: Message) {
+    if (!message.id) {
+      console.error('Message ID is required for toggling favorite status');
+      return;
+    }
+    this.messageService.toggleFavorite(message.id, !message.isFavorite);
   }
 }

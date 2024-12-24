@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -11,22 +11,17 @@ import {
   IonItem,
   IonSpinner,
   IonButton,
-  IonListHeader,
-  IonModal,
   IonButtons,
-  IonBackButton,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
   Platform,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { MessageComponent } from '../message/message.component';
 import { MessageService, Message } from '../services/message.service';
 import { ViewMessagePage } from '../view-message/view-message.page';
 import { map, Observable } from 'rxjs';
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
+import { caretDown, caretUp } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-home',
@@ -47,22 +42,16 @@ import { AsyncPipe, DatePipe } from '@angular/common';
     IonItem,
     IonSpinner,
     IonButton,
-    IonListHeader,
-    IonModal,
     IonButtons,
-    IonBackButton,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonCardContent,
-    DatePipe,
+    IonIcon,
   ],
 })
 export class HomePage {
   sortDescending = true;
+  favoritesFilterSet: boolean = false;
+  desktop!: boolean;
+  private platform = inject(Platform);
   private messageService = inject(MessageService);
-  favorite: boolean= false;
   messages!: Message[];
   sortedMessages$: Observable<Message[]> = this.messageService
     .getMessages()
@@ -75,13 +64,14 @@ export class HomePage {
         });
       })
     );
+
   selectedMessage$ = this.messageService.selectedMessage$;
 
-  desktop!: boolean;
-  private platform = inject(Platform);
+  constructor() {
+    addIcons({ caretUp, caretDown });
+  }
 
   ngOnInit() {
-    console.log(this.platform.is('desktop'));
     if (this.platform.is('desktop')) {
       this.desktop = true;
     } else {
@@ -103,7 +93,10 @@ export class HomePage {
     );
   }
 
-  toggleFilter(parameter: boolean){
-    this.messageService.getFilteredMessages(parameter);
+  favorites$: Observable<Message[]> =
+    this.messageService.getFavoriteMessages(true);
+
+  toggleFavoritesFilter() {
+    this.favoritesFilterSet = !this.favoritesFilterSet;
   }
 }

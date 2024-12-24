@@ -1,13 +1,21 @@
 @if (message) {
-<ion-item (click)="selectMessage(message)" detail="true"  class="message">
-  <ion-label class="ion-text-wrap">
-    <b>
-      {{ message.date |    date: 'y - MMMM d'}}
-    </b>
-    <p>{{message.location}}</p>
-  </ion-label>
-  <ion-button fill="clear" slot="end" (click)="toggleFavorite($event, message)" >
-      <ion-icon [name]="message.isFavorite ? 'heart' : 'heart-outline'" [color]="message.isFavorite ? 'danger' : 'primary'"></ion-icon>
-  </ion-button>
-</ion-item>
+  <ion-item 
+    (click)="selectMessage(message)" 
+    detail="true"  
+    class="message" 
+    [class.selected]="message.id === selectedMessage?.id">
+    <ion-label class="ion-text-wrap">
+      <b>{{ message.date | date: 'y - MMMM d'}}</b>
+      <p>{{message.location}}</p>
+    </ion-label>
+    <ion-button 
+      fill="clear" 
+      slot="end" 
+      (click)="toggleFavorite($event, message)">
+      <ion-icon 
+        [name]="message.isFavorite ? 'heart' : 'heart-outline'" 
+        [color]="message.isFavorite ? 'danger' : 'primary'">
+      </ion-icon>
+    </ion-button>
+  </ion-item>
 }

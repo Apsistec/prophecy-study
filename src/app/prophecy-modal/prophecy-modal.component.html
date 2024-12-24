@@ -1,13 +1,14 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button color="secondary" fill="clear" (click)="toggleFavorite($event, message)">
-        <ion-icon [name]="message.isFavorite ? 'heart' : 'heart-outline'" [color]="message.isFavorite ? 'danger' : 'primary'"></ion-icon>
-      </ion-button>
+@if(selectedMessage$ | async; as message){
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button color="secondary" fill="clear" (click)="toggleFavorite($event, message)">
+          <ion-icon [name]="message.isFavorite ? 'heart' : 'heart-outline'" [color]="message.isFavorite ? 'danger' : 'primary'"></ion-icon>
+        </ion-button>
       </ion-buttons>
-    <ion-title>Prophecy</ion-title>
-    <ion-buttons slot="end">
-      <ion-button color="secondary" fill="clear" (click)="cancel()">Back</ion-button>
+      <ion-title>Prophecy</ion-title>
+      <ion-buttons slot="end">
+        <ion-button color="secondary" fill="clear" (click)="cancel(message)">Back</ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -29,3 +30,4 @@
       <!-- <a href="selectedMessage.link">Link to House of Destiny</a> -->
     </ion-card>
   </ion-content>
+}

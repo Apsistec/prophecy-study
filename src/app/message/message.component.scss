@@ -1,6 +1,15 @@
 .message {
   cursor: pointer;
+  --ion-item-background: var(--ion-color-light-shade); 
 }
+
 .message:hover {
-  --background: blue;
+  --background: var(--ion-color-light);
+}
+
+.selected {
+  --ion-item-background: var(--ion-color-light-tint); 
+}
+
+.unselected {
 }

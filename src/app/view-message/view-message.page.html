@@ -1,28 +1,39 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-<ion-title>
-  Prophecy
-</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!-- view-message.component.html -->
+<div class="message-detail">
+  @if (selectedMessage$ | async; as selectedMessage) {
+    <ion-header class="detail-header">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button 
+            color="secondary" 
+            fill="clear" 
+            (click)="toggleFavorite(selectedMessage)">
+            <ion-icon 
+              [name]="selectedMessage.isFavorite ? 'heart' : 'heart-outline'" 
+              [color]="selectedMessage.isFavorite ? 'danger' : 'primary'">
+            </ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title>Prophecy</ion-title>
+      </ion-toolbar>
+    </ion-header>
 
-@if (selectedMessage$ | async; as selectedMessage) {
-<ion-content [fullscreen]="true">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>
-        {{ selectedMessage.date | date: 'EEEE, MMMM d, y' }}
-      </ion-card-subtitle>
-      <ion-card-title>
-        {{selectedMessage.location}}
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>
-        {{selectedMessage.paragraphs}}
-      </p>
-    </ion-card-content>
-    <!-- <a href="selectedMessage.link">Link to House of Destiny</a> -->
-  </ion-card>
-</ion-content>
-}
+    <div class="detail-content">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>
+            {{ selectedMessage.date | date: 'EEEE, MMMM d, y' }}
+          </ion-card-subtitle>
+          <ion-card-title>
+            {{selectedMessage.location}}
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          @for (paragraph of selectedMessage.paragraphs; track paragraph) {
+            <p>{{paragraph}}</p>
+          }
+        </ion-card-content>
+      </ion-card>
+    </div>
+  }
+</div>

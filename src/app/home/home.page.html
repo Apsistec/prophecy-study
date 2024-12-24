@@ -5,7 +5,8 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true">
+
+<ion-content class="main-content">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title class="ion-text-wrap">
@@ -13,49 +14,50 @@
       </ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-grid>
     <ion-row>
-      <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="4" size-xl="4">
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="toggleSort()" fill="clear" color="secondary" expand="block">
+      <ion-col size="12"  size-md="4">
+        <div class="list-container">
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="toggleSort()" fill="clear" color="secondary" class="two-line-button">
+                Sort
+                <ion-icon color="primary" name="caret-up" [class.rotate]="sortDescending"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+              <ion-button fill="clear" color="secondary" (click)="toggleFavoritesFilter()">
+                Show <br> {{ favoritesFilterSet ? 'all' : 'favorites' }}
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
 
-
-              Sort <br>{{ sortDescending ? 'Ascending' : 'Descending' }}
-
-            </ion-button>
-
-          </ion-buttons>
-          <ion-buttons slot="end">
-            <ion-button (click)="toggleFilter(favorite = !favorite)" fill="clear" color="secondary" expand="block">
-
-
-              Filter <br> {{ favorite ? 'favorite' : 'all' }}
-
-            </ion-button>
-
-          </ion-buttons>
-        </ion-toolbar>
-
-        <ion-content class="messages-list-container">
-          <ion-list class="messages-list">
-            @if(sortedMessages$){
-            @for (message of sortedMessages$ | async; track message.id) {
-            <app-message [message]="message" f></app-message>
-            }
-            }
-            @else {
-            <ion-item>
+          <div class="messages-list-container">
+            @if(!favorites$ && !sortedMessages$){
               <ion-spinner></ion-spinner>
-            </ion-item>
             }
-          </ion-list>
-        </ion-content>
+            <ion-list class="messages-list"> 
+              @if(favoritesFilterSet){
+                @for (message of favorites$ | async; track message.id) {
+                  <app-message [message]="message"></app-message>
+                }
+              }@else{
+                @if(sortedMessages$){
+                  @for (message of sortedMessages$ | async; track message.id) {
+                    <app-message [message]="message"></app-message>
+                  }
+                }
+              }
+            </ion-list>
+          </div>
+        </div>
       </ion-col>
+
       @if(desktop){
-      <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="8" size-xl="8">
-        <app-view-message></app-view-message>
-      </ion-col>
+        <ion-col size="12"  size-md="8">
+          <app-view-message></app-view-message>
+        </ion-col>
       }
     </ion-row>
   </ion-grid>

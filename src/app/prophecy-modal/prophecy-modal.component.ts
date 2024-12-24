@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import {
   IonCard,
@@ -36,27 +36,34 @@ import { Message, MessageService } from '../services/message.service';
     IonToolbar,
     IonContent,
     DatePipe,
-    IonIcon
+    IonIcon,
+    AsyncPipe,
   ],
 })
-export class ProphecyModalComponent{
+export class ProphecyModalComponent {
   constructor(private modalCtrl: ModalController) {}
-  @Input() message!: Message;
+  // @Input() message!: Message;
 
-private messageService = inject(MessageService)
+  private messageService = inject(MessageService);
 
-toggleFavorite(event: Event, message: Message) {
-  if (!message.id) {
-    console.error('Message ID is required for toggling favorite status');
-    return;
+  selectedMessage$ = this.messageService.selectedMessage$;
+
+  toggleFavorite(event: Event, message: Message) {
+    if (!message.id) {
+      console.error('Message ID is required for toggling favorite status');
+      return;
+    }
+    const newStatus = !message.isFavorite;
+    // message.isFavorite = !message.isFavorite;
+    this.messageService.toggleFavorite(message.id, newStatus);
+    
   }
-  message.isFavorite = !message.isFavorite;
-  const newStatus = !message.isFavorite;
-  this.messageService.toggleFavorite(message.id, newStatus);
-}
 
+  save(message: Message) {
+    this.modalCtrl.dismiss(message, 'save')
+  }
 
-  cancel() {
-    this.modalCtrl.dismiss(this.message, 'cancel');
+  cancel(message: Message) {
+    this.modalCtrl.dismiss(message, 'cancel');
   }
 }
