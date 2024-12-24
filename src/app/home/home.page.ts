@@ -62,7 +62,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 export class HomePage {
   sortDescending = true;
   private messageService = inject(MessageService);
-
+  favorite: boolean= false;
   messages!: Message[];
   sortedMessages$: Observable<Message[]> = this.messageService
     .getMessages()
@@ -101,5 +101,9 @@ export class HomePage {
         });
       })
     );
+  }
+
+  toggleFilter(parameter: boolean){
+    this.messageService.getFilteredMessages(parameter);
   }
 }

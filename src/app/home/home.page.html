@@ -8,7 +8,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">
+      <ion-title class="ion-text-wrap">
         Kim Clement's Prophecies
       </ion-title>
     </ion-toolbar>
@@ -16,13 +16,29 @@
   <ion-grid>
     <ion-row>
       <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="4" size-xl="4">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="toggleSort()" fill="clear" color="secondary" expand="block">
+
+
+              Sort <br>{{ sortDescending ? 'Ascending' : 'Descending' }}
+
+            </ion-button>
+
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button (click)="toggleFilter(favorite = !favorite)" fill="clear" color="secondary" expand="block">
+
+
+              Filter <br> {{ favorite ? 'favorite' : 'all' }}
+
+            </ion-button>
+
+          </ion-buttons>
+        </ion-toolbar>
+
         <ion-content class="messages-list-container">
           <ion-list class="messages-list">
-            <ion-list-header>
-              <ion-button (click)="toggleSort()">
-                Sort {{ sortDescending ? 'Ascending' : 'Descending' }}
-              </ion-button>
-            </ion-list-header>
             @if(sortedMessages$){
             @for (message of sortedMessages$ | async; track message.id) {
             <app-message [message]="message" f></app-message>

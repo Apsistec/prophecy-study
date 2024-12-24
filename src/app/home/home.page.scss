@@ -1,7 +1,25 @@
 .messages-list-container {
-    height: 100vh;
+    height: 86vh;
 }
 
-ion-title {
-    text-wrap: wrap;
-}
+// .header-content{
+//          /* Allow text to wrap naturally */
+//          white-space: normal !important;
+      
+//          /* Ensure text starts at the top of the container */
+//          padding-top: 0;
+//          padding-bottom: 0;
+         
+//          /* Add some vertical padding for better spacing */
+//          --padding-top: 8px;
+//          --padding-bottom: 8px;
+         
+//          /* Control the line height for better readability */
+//          line-height: 1.2;
+         
+//          /* Optionally set a maximum number of lines */
+//          display: -webkit-box;
+//          -webkit-box-orient: vertical;
+//          /* Uncomment the next line if you want to limit to 2 lines */
+//          /* -webkit-line-clamp: 2; */
+// }
