@@ -28,13 +28,11 @@ export interface Message {
   providedIn: 'root',
 })
 export class MessageService {
-  public messages: Message[] = [];
   private messagesSubject = new BehaviorSubject<Message[]>([]);
   messages$ = this.messagesSubject.asObservable();
 
   private selectedMessageSubject = new BehaviorSubject<Message | null>(null);
   selectedMessage$ = this.selectedMessageSubject.asObservable();
-
 
   private favoriteUpdatesSubject = new Subject<{
     messageId: string;
@@ -68,6 +66,11 @@ export class MessageService {
           });
         }
       });
+
+    // Initialize messages from Firestore
+    this.getMessages().subscribe(messages => {
+      this.messagesSubject.next(messages);
+    });
   }
 
   toggleFavorite(messageId: string, newStatus: boolean) {
@@ -75,50 +78,40 @@ export class MessageService {
       console.error('Cannot toggle favorite: Invalid message ID');
       return;
     }
-    // Update local state for immediate UI feedback
     this.updateLocalFavoriteStatus(messageId, newStatus);
-    // Queue the Firestore update
     this.favoriteUpdatesSubject.next({ messageId, status: newStatus });
   }
 
   private updateLocalFavoriteStatus(messageId: string, isFavorite: boolean) {
-    // Update messages list
     const currentMessages = this.messagesSubject.value;
     if (currentMessages?.length) {
       const updatedMessages = currentMessages.map((message) =>
         message.id === messageId ? { ...message, isFavorite } : message
+      );
+      this.messagesSubject.next(updatedMessages);
+    }
+    
+    const selectedMessage = this.selectedMessageSubject.value;
+    if (selectedMessage && selectedMessage.id === messageId) {
+      this.selectedMessageSubject.next({ ...selectedMessage, isFavorite });
+    }
+  }
+
+  public getMessages(): Observable<Message[]> {
+    const messagesRef = collection(this.firestore, 'prophecies');
+    return collectionData(messagesRef, { idField: 'id' }) as Observable<Message[]>;
+  }
+
+  public getFavoriteMessages(parameter: boolean): Observable<Message[]> {
+    const messagesRef = collection(this.firestore, 'prophecies');
+    const propheciesQuery = query(
+      messagesRef,
+      where('isFavorite', '==', parameter)
     );
-    this.messagesSubject.next(updatedMessages);
+    return collectionData(propheciesQuery, { idField: 'id' }) as Observable<Message[]>;
   }
-  
-  // Update selected message if it's the one being modified
-  const selectedMessage = this.selectedMessageSubject.value;
-  if (selectedMessage && selectedMessage.id === messageId) {
-    this.selectedMessageSubject.next({ ...selectedMessage, isFavorite });
-  }
-}
 
-
-public getMessages(): Observable<Message[]> {
-  const messagesRef = collection(this.firestore, 'prophecies');
-  return collectionData(messagesRef, { idField: 'id' }) as Observable<
-  Message[]
-  >;
-}
-
-public getFavoriteMessages(parameter: boolean): Observable<Message[]> {
-  const messagesRef = collection(this.firestore, 'prophecies');
-  const propheciesQuery = query(
-    messagesRef,
-    where('isFavorite', '==', parameter)
-  );
-  return collectionData(propheciesQuery, { idField: 'id' }) as Observable<
-  Message[]
-  >;
-}
-
-setSelectedMessage(message: Message) {
-  console.log(message.id)
-  this.selectedMessageSubject.next(message);
+  setSelectedMessage(message: Message) {
+    this.selectedMessageSubject.next(message);
   }
 }

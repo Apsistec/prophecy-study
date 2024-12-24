@@ -23,9 +23,9 @@
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>
-          {{message.paragraphs}}
-        </p>
+        @for (paragraph of message.paragraphs; track paragraph) {
+          <p>{{paragraph}}</p>
+        }
       </ion-card-content>
       <!-- <a href="selectedMessage.link">Link to House of Destiny</a> -->
     </ion-card>

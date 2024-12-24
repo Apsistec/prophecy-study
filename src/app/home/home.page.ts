@@ -8,7 +8,6 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonItem,
   IonSpinner,
   IonButton,
   IonButtons,
@@ -39,12 +38,11 @@ import { addIcons } from 'ionicons';
     IonCol,
     ViewMessagePage,
     AsyncPipe,
-    IonItem,
     IonSpinner,
     IonButton,
     IonButtons,
-    IonIcon,
-  ],
+    IonIcon
+],
 })
 export class HomePage {
   sortDescending = true;
