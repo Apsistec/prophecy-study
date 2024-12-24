@@ -45,9 +45,16 @@ export class ProphecyModalComponent{
 
 private messageService = inject(MessageService)
 
-  toggleFavorite(event: Event, message: Message) {
-    message.isFavorite = !message.isFavorite;
+toggleFavorite(event: Event, message: Message) {
+  if (!message.id) {
+    console.error('Message ID is required for toggling favorite status');
+    return;
   }
+  message.isFavorite = !message.isFavorite;
+  const newStatus = !message.isFavorite;
+  this.messageService.toggleFavorite(message.id, newStatus);
+}
+
 
   cancel() {
     this.modalCtrl.dismiss(this.message, 'cancel');
