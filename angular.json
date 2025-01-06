@@ -22,9 +22,7 @@
               "base": "www"
             },
             "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -38,7 +36,16 @@
                 "input": "public",
                 "output": "/"
               },
-              "public/manifest.webmanifest"
+              {
+                "glob": "manifest.webmanifest",
+                "input": "./public",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "public/icons",
+                "output": "icons"
+              }
             ],
             "serviceWorker": "ngsw-config.json",
             "styles": ["src/global.scss", "src/theme/variables.scss"],
